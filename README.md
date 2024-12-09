@@ -1,5 +1,3 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
 ## Getting Started
 
 First, run the development server:
@@ -16,21 +14,64 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Getting Questions
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+After you take the exams on Digital Cloud Training you see this screen:
+![alt text](image.png)
+Click the Feedback Report Button to open the popup.
 
-## Learn More
+Open the developer chrome tools and paste following script in the console and hit enter:
+```js
+async function scrollAndWaitForContent(selector) {
+    const elements = document.querySelectorAll(selector);
+    const wrong = [];
 
-To learn more about Next.js, take a look at the following resources:
+    for (const element of elements) {
+        // Scroll element into view
+        element.scrollIntoView({ behavior: "smooth", block: "center" });
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+        // Wait for any dynamic content to load
+        await new Promise((resolve) => setTimeout(resolve, 1000));
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+        const isIncorrect = element.querySelectorAll("div.feedback-wrong-answer").length > 0;
 
-## Deploy on Vercel
+        if (isIncorrect) {
+            var choices;
+            var answer;
+            var isMultiple = element.querySelectorAll(".multiple-options-correctness-column").length > 0; 
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+            if (isMultiple) {
+                choices = Array.from(element.querySelectorAll(".lw-qn-mc-options .right-col")[0].children).map((el) => el.textContent.trim());
+                answer = Array.from(element.querySelectorAll(".correct-answers-wrapper .lw-ass-widget-wrapper")).map((el) => el.textContent.trim());
+            } else {
+                choices = Array.from(element.querySelectorAll('.lw-qn-mc-options')[0].children).map(el => el.textContent.trim());
+                answer = element.querySelectorAll(".correct-answers-wrapper .lw-ass-widget-wrapper")[0].textContent.trim();
+            }
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+            var data = {
+                question: element.querySelectorAll(".lw-ass-widget-wrapper")[0].textContent.trim(),
+                choices,
+                answer,
+                reason: element.querySelectorAll(".author-feedback-wrapper .learnworlds-main-text-small")[0].textContent.trim(),
+            };
+            wrong.push(data);
+        }
+    }
+
+    console.log(wrong);
+}
+
+```
+A function is now in the console that allows you to run:
+> [!WARNING]
+> Make sure the popup is scrolled to the top and make sure that you have opened the element element in the elements explorer
+```
+scrollAndWaitForContent('div.mb-50')
+```
+The ```div.mb-50``` is where the answers are held in the html.
+
+When data is consoled out you can write click and save as a global variable to ```JSON.stringify``` and use the ```copy(whatever_variable_name_you_used)``` console command to grab the data.
+
+You can see an example in the ```app/components/questions.json``` file.
+
+The app handles multiple questions and single questions. It will also grade you.
