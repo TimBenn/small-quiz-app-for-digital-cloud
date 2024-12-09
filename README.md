@@ -74,7 +74,7 @@ scrollAndWaitForContent('div.mb-50')
 ```
 The ```div.mb-50``` is where the answers are held in the html.
 
-When data is consoled out you can write click and save as a global variable to ```JSON.stringify``` and use the ```copy(whatever_variable_name_you_used)``` console command to grab the data.
+When data is logged out you can write click and save as a global variable to ```JSON.stringify``` and use the ```copy(whatever_variable_name_you_used)``` console command to grab the data.
 
 You can see an example in the ```app/components/questions.json``` file.
 
