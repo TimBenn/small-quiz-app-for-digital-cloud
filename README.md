@@ -18,6 +18,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 After you take the exams on Digital Cloud Training you see this screen:
 ![alt text](image.png)
+
 Click the Feedback Report Button to open the popup.
 
 Open the developer chrome tools and paste following script in the console and hit enter:
