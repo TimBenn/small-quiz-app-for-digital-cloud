@@ -16,6 +16,9 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Getting Questions
 
+> [!WARNING]
+> This is a little hacked together.
+
 After you take the exams on Digital Cloud Training you see this screen:
 ![alt text](image.png)
 
@@ -65,7 +68,7 @@ async function scrollAndWaitForContent(selector) {
 ```
 A function is now in the console that allows you to run:
 > [!WARNING]
-> Make sure the popup is scrolled to the top and make sure that you have opened the element element in the elements explorer
+> Make sure the popup is scrolled to the top and make sure that you have opened the wrapper element for ```div.mb-50``` element in the elements explorer
 ```
 scrollAndWaitForContent('div.mb-50')
 ```
